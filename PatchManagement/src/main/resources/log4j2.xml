@@ -4,6 +4,7 @@
         <Property name="LOG_PATTERN">
 					%d{yyyy-MM-dd HH:mm:ss} -patchManagement- %C{1} : %M:%L : %m%n%ex
         </Property>
+         <Property name="env">${bundle:application:spring.profiles.active}</Property>
     </Properties>
 
     <Appenders>
@@ -13,8 +14,8 @@
 
         <!-- Rolling File Appender -->
         <!-- patchManager_Dev and patchManager_Qa -->
-        <RollingFile name="FileAppender" fileName="C:/PatchScheduler/patchManager_Dev/patchscheduler.log"
-                     filePattern="C:/PatchScheduler/patchManager_Dev/patchscheduler.log-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppender" fileName="C:/PatchScheduler/patchManager_${env}/patchscheduler.log"
+                     filePattern="C:/PatchScheduler/patchManager_${env}/patchscheduler.log-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>

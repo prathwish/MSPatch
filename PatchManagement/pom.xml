@@ -7,6 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.4.RELEASE</version>
+		<!-- <relativePath /> --><!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.patch</groupId>
 	<artifactId>patch_management</artifactId>
@@ -122,24 +123,51 @@
 			<artifactId>hibernate-types-52</artifactId>
 			<version>2.4.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-
-
-
 	</dependencies>
 
-	<build>
-		<plugins>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<activatedProperties>dev</activatedProperties>
+			</properties>
+			<activation>
+				<!-- this profile is active by default -->
+				<activeByDefault>true</activeByDefault>
+				<!-- activate if system properties 'env=dev' -->
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<activatedProperties>qa</activatedProperties>
+			</properties>
+			<activation>
+				<!-- activate if system properties 'env=qa' -->
+				<property>
+					<name>env</name>
+					<value>qa</value>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<finalName>patchscheduler_${activatedProperties}</finalName>
+		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<finalName>patchscheduler</finalName>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
